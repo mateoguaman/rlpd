@@ -6,7 +6,7 @@ from configs import td_config
 def get_config():
     config = td_config.get_config()
 
-    config.model_cls = "SACLearner"
+    # config.model_cls = "SACLearner"
 
     config.temp_lr = 3e-4
 

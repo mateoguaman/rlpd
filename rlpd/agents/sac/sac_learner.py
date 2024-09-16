@@ -4,7 +4,7 @@ from functools import partial
 from typing import Dict, Optional, Sequence, Tuple
 
 import flax
-import gym
+import gymnasium as gym
 import jax
 import jax.numpy as jnp
 import optax
@@ -18,7 +18,7 @@ from rlpd.distributions import TanhNormal
 from rlpd.networks import (
     MLP,
     Ensemble,
-    MLPResNetV2,
+    # MLPResNetV2,
     StateActionValue,
     subsample_ensemble,
 )
@@ -93,6 +93,7 @@ class SACLearner(Agent):
         )
 
         if use_critic_resnet:
+            raise NotImplementedError("Image observations currently not supported")
             critic_base_cls = partial(
                 MLPResNetV2,
                 num_blocks=1,
@@ -157,8 +158,7 @@ class SACLearner(Agent):
 
         def actor_loss_fn(actor_params) -> Tuple[jnp.ndarray, Dict[str, float]]:
             dist = self.actor.apply_fn({"params": actor_params}, batch["observations"])
-            actions = dist.sample(seed=key)
-            log_probs = dist.log_prob(actions)
+            actions, log_probs = dist.sample_and_log_prob(seed=key)
             qs = self.critic.apply_fn(
                 {"params": self.critic.params},
                 batch["observations"],
@@ -200,7 +200,7 @@ class SACLearner(Agent):
         rng = self.rng
 
         key, rng = jax.random.split(rng)
-        next_actions = dist.sample(seed=key)
+        next_actions, next_log_probs = dist.sample_and_log_prob(seed=key)
 
         # Used only for REDQ.
         key, rng = jax.random.split(rng)
@@ -221,7 +221,6 @@ class SACLearner(Agent):
         target_q = batch["rewards"] + self.discount * batch["masks"] * next_q
 
         if self.backup_entropy:
-            next_log_probs = dist.log_prob(next_actions)
             target_q -= (
                 self.discount
                 * batch["masks"]

@@ -1,6 +1,6 @@
 from typing import Optional
 
-import gym
+import gymnasium as gym
 import numpy as np
 
 import wandb
@@ -43,13 +43,14 @@ class WANDBVideo(gym.Wrapper):
 
     def reset(self, **kwargs):
         self._video.clear()
-        obs = super().reset(**kwargs)
+        obs, info = super().reset(**kwargs)
         self._add_frame(obs)
-        return obs
+        return obs, info
 
     def step(self, action: np.ndarray):
 
-        obs, reward, done, info = super().step(action)
+        obs, reward, terminated, truncated, info = super().step(action)
+        done = terminated or truncated
         self._add_frame(obs)
 
         if done and len(self._video) > 0:
@@ -61,4 +62,4 @@ class WANDBVideo(gym.Wrapper):
             video = wandb.Video(video, fps=20, format="mp4")
             wandb.log({self._name: video}, commit=False)
 
-        return obs, reward, done, info
+        return obs, reward, terminated, truncated, info
