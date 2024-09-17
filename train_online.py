@@ -6,7 +6,7 @@ import wandb
 from absl import app, flags
 from ml_collections import config_flags
 
-from rlpd.agents import SACLearner
+from rlpd.agents import SACLearner, TD3Learner
 from rlpd.data import ReplayBuffer
 from rlpd.evaluation import evaluate
 from rlpd.wrappers import wrap_gym, set_universal_seed
@@ -66,7 +66,8 @@ def main(_):
     set_universal_seed(eval_env, FLAGS.seed + 42)
 
     kwargs = dict(FLAGS.config)
-    agent = SACLearner.create(FLAGS.seed, env.observation_space, env.action_space, **kwargs)
+    # agent = SACLearner.create(FLAGS.seed, env.observation_space, env.action_space, **kwargs)
+    agent = TD3Learner.create(FLAGS.seed, env.observation_space, env.action_space)
 
     replay_buffer = ReplayBuffer(
         env.observation_space, env.action_space, FLAGS.max_steps
