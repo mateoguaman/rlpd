@@ -18,20 +18,20 @@ except:
 from ml_collections import config_flags
 
 import wandb
-from rlpd.agents import SACLearner
-from rlpd.data import ReplayBuffer
-from rlpd.data.d4rl_datasets import D4RLDataset
+from jaxrl.agents import SACLearner
+from jaxrl.data import ReplayBuffer
+from jaxrl.data.d4rl_datasets import D4RLDataset
 
 try:
-    from rlpd.data.binary_datasets import BinaryDataset
+    from jaxrl.data.binary_datasets import BinaryDataset
 except:
     print("not importing binary dataset")
-from rlpd.evaluation import evaluate
-from rlpd.wrappers import wrap_gym
+from jaxrl.evaluation import evaluate
+from jaxrl.wrappers import wrap_gym
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string("project_name", "rlpd", "wandb project name.")
+flags.DEFINE_string("project_name", "jaxrl", "wandb project name.")
 flags.DEFINE_string("env_name", "halfcheetah-expert-v2", "D4rl dataset name.")
 flags.DEFINE_float("offline_ratio", 0.5, "Offline ratio.")
 flags.DEFINE_integer("seed", 42, "Random seed.")

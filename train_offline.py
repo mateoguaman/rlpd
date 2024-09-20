@@ -8,10 +8,10 @@ from ml_collections import config_flags
 import ml_collections
 from ml_collections.config_dict import config_dict
 
-from rlpd.agents import BCLearner, IQLLearner
-from rlpd.data import load_replay_buffer
-from rlpd.evaluation import evaluate
-from rlpd.wrappers import wrap_gym, set_universal_seed
+from jaxrl.agents import BCLearner, IQLLearner
+from jaxrl.data import load_replay_buffer
+from jaxrl.evaluation import evaluate
+from jaxrl.wrappers import wrap_gym, set_universal_seed
 
 FLAGS = flags.FLAGS
 
@@ -141,6 +141,6 @@ if __name__ == "__main__":
 '''
 Run with
 
-MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python train_offline.py --env_name=HalfCheetah-v4  --algorithm=iql --buffer_path=/home/mateo/projects/rlpd/expert_data/HalfCheetah-v4_1000000_steps.npz
+MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python train_offline.py --env_name=HalfCheetah-v4  --algorithm=iql --buffer_path=/home/mateo/projects/jaxrl/expert_data/HalfCheetah-v4_1000000_steps.npz
 
 '''

@@ -7,11 +7,11 @@ import os
 from absl import app, flags
 from ml_collections import config_flags
 
-from rlpd.agents import SACLearner, TD3Learner
-from rlpd.data import ReplayBuffer
-from rlpd.evaluation import evaluate
-from rlpd.wrappers import wrap_gym, set_universal_seed
-from rlpd.data import load_replay_buffer, save_replay_buffer
+from jaxrl.agents import SACLearner, TD3Learner
+from jaxrl.data import ReplayBuffer
+from jaxrl.evaluation import evaluate
+from jaxrl.wrappers import wrap_gym, set_universal_seed
+from jaxrl.data import load_replay_buffer, save_replay_buffer
 
 import datetime
 

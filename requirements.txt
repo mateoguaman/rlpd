@@ -14,3 +14,4 @@ wandb >= 0.16.2
 moviepy
 imageio
 distrax
+orbax
