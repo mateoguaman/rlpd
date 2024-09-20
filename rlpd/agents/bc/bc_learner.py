@@ -16,7 +16,7 @@ from rlpd.agents.agent import Agent
 from rlpd.data.dataset import DatasetDict
 from rlpd.types import Params, PRNGKey
 from rlpd.networks import MLP
-from distributions import Normal, TanhNormal
+from rlpd.distributions import Normal, TanhNormal
 
 # def log_prob_update(
 #     rng: PRNGKey, actor: TrainState, batch: FrozenDict
@@ -203,8 +203,8 @@ class BCLearner(Agent):
             return actor_loss, {
                 "bc_loss": actor_loss,
                 "mse": mse.mean(),
-                "log_probs": log_probs,
-                "pi_actions": pi_actions,
+                "log_probs": log_probs.mean(),
+                # "pi_actions": pi_actions,
                 "mean_std": actor_std.mean(),
                 "max_std": actor_std.max(),}
         

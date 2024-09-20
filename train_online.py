@@ -15,10 +15,7 @@ from rlpd.data import load_replay_buffer, save_replay_buffer
 
 import datetime
 
-try:
-    from flax.training import checkpoints
-except:
-    print("Not loading checkpointing functionality.")
+import orbax.checkpoint as ocp
 from ml_collections import config_flags
 
 FLAGS = flags.FLAGS
@@ -71,11 +68,18 @@ def main(_):
     now = datetime.datetime.now()
     date_str = now.strftime("%Y-%m-%d_%H-%M-%S")
 
-    log_dir = os.path.join(FLAGS.save_dir, exp_prefix, date_str)
+    log_dir = os.path.abspath(os.path.join(FLAGS.save_dir, exp_prefix, date_str))
 
     if FLAGS.checkpoint_model:
         chkpt_dir = os.path.join(log_dir, "checkpoints")
         os.makedirs(chkpt_dir, exist_ok=True)
+
+        ## Set up Orbax checkpointer manager
+        import absl.logging
+        absl.logging.set_verbosity(absl.logging.INFO)
+        options = ocp.CheckpointManagerOptions(create=True) ## TODO: Change max_to_keep. 
+        checkpoint_manager = ocp.CheckpointManager(
+            chkpt_dir, options=options)
 
     if FLAGS.checkpoint_buffer:
         buffer_dir = os.path.join(log_dir, "buffers")
@@ -151,9 +155,7 @@ def main(_):
         if i % FLAGS.save_interval == 0 and i > 0:
             if FLAGS.checkpoint_model:
                 try:
-                    checkpoints.save_checkpoint(
-                        chkpt_dir, agent, step=i, keep=20, overwrite=True
-                    )
+                    checkpoint_manager.save(step=i, args=ocp.args.StandardSave(agent))
                 except:
                     print("Could not save model checkpoint.")
 
@@ -162,7 +164,13 @@ def main(_):
                     save_replay_buffer(replay_buffer, os.path.join(buffer_dir, f"buffer_{i}"), env.observation_space, env.action_space)
                 except:
                     print("Could not save agent buffer.")
-
+    checkpoint_manager.wait_until_finished()
 
 if __name__ == "__main__":
     app.run(main)
+
+'''
+Run with
+
+MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python train_online.py --env_name=HalfCheetah-v4  --start_training 10000 --max_steps 1000000 --config=configs/rlpd_config.py
+'''
