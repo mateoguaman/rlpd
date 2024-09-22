@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jaxrl"
+version = "0.1.0"
+description = "A modified version of the original Jaxrl package by Ilya Kostrikov"
+authors = [{name = "Mateo Guaman Castro", email = "mateo.guaman1998@gmail.com"}]
+readme = "README.md"
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+include = ["*"]
+exclude = ["tests*"]

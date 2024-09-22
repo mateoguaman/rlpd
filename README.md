@@ -7,7 +7,7 @@ This jaxrl codebase is modified from https://github.com/ikostrikov/jaxrl. Specif
 ```bash
 conda create -n jaxrl python=3.10
 conda activate jaxrl
-pip install -r requirements.txt
+pip install -e .
 pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_releases.html  # Note: wheels only available on linux.
 
 ```
