@@ -73,9 +73,9 @@ class IQLLearner(Agent):
                critic_layer_norm: bool = False,
                value_layer_norm: bool = False,
                num_qs: int = 2,
-               num_min_qs: int = None,
+               num_min_qs: Optional[int] = None,
                num_vs: int = 1,
-               num_min_vs: int = None,
+               num_min_vs: Optional[int] = None,
                use_tanh_normal: bool = False,
                state_dependent_std: bool = False):
         rng = jax.random.PRNGKey(seed)
