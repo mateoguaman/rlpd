@@ -162,6 +162,6 @@ if __name__ == "__main__":
 '''
 Run with
 
-MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python train_online.py --config-name=droq
+MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python train_online.py --config-name=sac
 
 '''

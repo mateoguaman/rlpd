@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+raise NotImplementedError("This is not implemented yet")
 import os
 import pickle
 

@@ -93,5 +93,5 @@ if __name__ == "__main__":
 '''
 Run with: 
 
-MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python collect.py --env_name=HalfCheetah-v4  --save_dir ./expert_data --checkpoint_path=/home/mateo/projects/jaxrl/logs/sac/2024-09-17_13-26-45/checkpoints --checkpoint_step=1000000 --config=configs/jaxrl_config.py
+MUJOCO_GL=egl XLA_PYTHON_CLIENT_PREALLOCATE=false python collect.py --env_name=HalfCheetah-v4  --save_dir ./expert_data --checkpoint_path=/home/mateo/projects/jaxrl/logs/sac/2024-09-17_13-26-45/checkpoints --checkpoint_step=1000000 --config=configs/rlpd_config.py
 '''
