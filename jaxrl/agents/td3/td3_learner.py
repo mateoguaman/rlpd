@@ -131,6 +131,22 @@ class TD3Learner(Agent):
             actor_delay=actor_delay,
         )
 
+    def initialize_pretrained_model(self, pretrained_agent):
+        new_actor = self.actor.replace(params=pretrained_agent["actor"]["params"])
+        new_critic = self.critic.replace(params=pretrained_agent["critic"]["params"])
+        new_target_critic = self.target_critic.replace(params=pretrained_agent["target_critic"]["params"])
+        new_target_actor = self.target_actor.replace(params=pretrained_agent["target_actor"]["params"])
+        new_tau = pretrained_agent["tau"]
+        ## TODO: Check if I need to add anything else
+
+        return self.replace(
+            actor=new_actor,
+            critic=new_critic,
+            target_critic=new_target_critic,
+            target_actor=new_target_actor,
+            tau=new_tau,
+        )
+
     def update_actor(self, batch: DatasetDict) -> Tuple[Agent, Dict[str, float]]:
         key, rng = jax.random.split(self.rng, num=2)
 

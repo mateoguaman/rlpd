@@ -175,6 +175,27 @@ class IQLLearner(Agent):
                    num_vs=num_vs,
                    num_min_vs=num_min_vs,
                    sharing_callback=None)
+    
+    def initialize_pretrained_model(self, pretrained_agent):
+        new_actor = self.actor.replace(params=pretrained_agent["actor"]["params"])
+        new_critic = self.critic.replace(params=pretrained_agent["critic"]["params"])
+        new_target_critic = self.target_critic.replace(params=pretrained_agent["target_critic"]["params"])
+        new_value = self.value.replace(params=pretrained_agent["value"]["params"])
+        new_target_value = self.target_value.replace(params=pretrained_agent["target_value"]["params"])
+        new_tau = pretrained_agent["tau"]
+        new_expectile = pretrained_agent["expectile"]
+        new_temperature = pretrained_agent["temperature"]
+
+        return self.replace(
+            actor=new_actor,
+            critic=new_critic,
+            target_critic=new_target_critic,
+            value=new_value,
+            target_value=new_target_value,
+            tau=new_tau,
+            expectile=new_expectile,
+            temperature=new_temperature
+        )
 
     def update_v(self, batch: DatasetDict) -> Tuple[Agent, Dict[str, float]]:
         rng = self.rng

@@ -102,6 +102,18 @@ class BCLearner(Agent):
             lr_schedule=lr_schedule,
             step=step
         )
+    def initialize_pretrained_model(self, pretrained_agent):
+        new_actor = self.actor.replace(params=pretrained_agent["actor"]["params"])
+        ## TODO: Check if below is necessary
+        new_lr_schedule = pretrained_agent["lr_schedule"]
+        new_step = pretrained_agent["step"]
+
+
+        return self.replace(
+            actor=new_actor,
+            lr_schedule=new_lr_schedule,
+            step=new_step
+        )
     
     @jax.jit
     def update(self, batch: DatasetDict):

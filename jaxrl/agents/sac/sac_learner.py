@@ -151,6 +151,23 @@ class SACLearner(Agent):
             num_min_qs=num_min_qs,
             backup_entropy=backup_entropy,
         )
+    
+    def initialize_pretrained_model(self, pretrained_agent):
+        new_actor = self.actor.replace(params=pretrained_agent["actor"]["params"])
+        new_critic = self.critic.replace(params=pretrained_agent["critic"]["params"])
+        new_target_critic = self.target_critic.replace(params=pretrained_agent["target_critic"]["params"])
+        new_temp = self.temp.replace(params=pretrained_agent["temp"]["params"])
+        new_tau = pretrained_agent["tau"]
+        new_target_entropy = pretrained_agent["target_entropy"]
+
+        return self.replace(
+            actor=new_actor,
+            critic=new_critic,
+            target_critic=new_target_critic,
+            temp=new_temp,
+            tau=new_tau,
+            target_entropy=new_target_entropy
+        )
 
     def update_actor(self, batch: DatasetDict) -> Tuple[Agent, Dict[str, float]]:
         key, rng = jax.random.split(self.rng)
